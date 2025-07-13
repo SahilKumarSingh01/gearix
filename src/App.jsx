@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import QrGenerator from './pages/QrGenerator.jsx';
 import ImageCompressor from './pages/ImageCompressor.jsx';
+import VideoCompressor from './pages/VideoCompressor.jsx';
+
 import Redirect from './pages/Redirect.jsx';
 import NotFound from './pages/NotFound.jsx';
 
@@ -19,6 +21,7 @@ const App = () => {
             <Route path="/qr" element={<QrGenerator />} />
             <Route path="/r" element={<Redirect />} />
             <Route path="/image-compressor" element={<ImageCompressor />} />
+            <Route path="/video-compressor" element={<VideoCompressor />} />
 
             {/* Add more routes here later */}
             <Route path="*" element={<NotFound />} />

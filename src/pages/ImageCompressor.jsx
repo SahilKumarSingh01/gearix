@@ -50,6 +50,7 @@ const ImageCompressor = () => {
 
   return (
     <div className={styles.compressorContainer}>
+      <h1 className={styles.title}>Image Compressor</h1>
       <input type="file" accept="image/*" onChange={handleFileChange} />
 
       {originalFile && (

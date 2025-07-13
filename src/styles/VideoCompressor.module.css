@@ -1,11 +1,11 @@
 .compressorContainer {
   padding: 24px;
-  max-width: 480px;
+  max-width: 600px;
   margin: 40px auto;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -20,6 +20,22 @@
   margin-bottom: 0.3rem; /* reduced */
   text-align: center;
 }
+.progressBar {
+  width: 100%;
+  background-color: #e0f2e9;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 18px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.2s ease-in-out;
+}
+
 .label {
   font-size: 14px;
   color: #444;
@@ -28,7 +44,7 @@
 .slider {
   width: 100%;
   cursor: pointer;
-  accent-color: #4CAF50; /* ✨ natural leafy green */
+  accent-color: #4CAF50;
 }
 
 .previewBox {
@@ -37,28 +53,18 @@
   padding: 16px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-.previewImage {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
 }
 
 .downloadButton {
   display: inline-block;
+  margin-top: 10px;
   padding: 10px 18px;
-  background-color: #4CAF50;  /* 🍀 calm green */
+  background-color: #4CAF50;
   color: white;
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 14px;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
 }
 
 .downloadButton:hover {
