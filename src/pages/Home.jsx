@@ -15,8 +15,8 @@ const Home = () => {
       <div className={styles.toolGrid}>
         <ToolCard name="QR Generator" icon={LuQrCode} link="/qr" />
         <ToolCard name="PDF Tools" icon={TbFileText} link="/pdf" />
-        <ToolCard name="Image Compressor" icon={LuImage} link="/image-compress" />
-        <ToolCard name="Video Compressor" icon={LuVideo} link="/video-compress" />
+        <ToolCard name="Image Compressor" icon={LuImage} link="/image-compressor" />
+        <ToolCard name="Video Compressor" icon={LuVideo} link="/video-compressor" />
         <ToolCard name="File Converter" icon={LuRepeat} link="/convert" />
       </div>
     </div>
