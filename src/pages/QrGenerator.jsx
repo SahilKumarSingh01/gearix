@@ -230,6 +230,7 @@ const QrGenerator = () => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                   setBgImage(reader.result); // set the uploaded image
+                  setBgColor("transparent");
                 };
                 reader.readAsDataURL(file);
               }
