@@ -68,8 +68,11 @@ const QrGenerator = () => {
   const [bgColor, setBgColor] = useState('#ffffff');
   const [dotType, setDotType] = useState('dots');
   const [cornerType, setCornerType] = useState('square');
-  const redirectUrl = `${import.meta.env.VITE_BASE_URL}/r?url=${encodeURIComponent(text)}`;
-
+  let url=text;
+  if(!text.startsWith("https://")&&!text.startsWith("http://")){
+    url="https://"+text;
+  }
+  const redirectUrl = `${import.meta.env.VITE_BASE_URL}/r?url=${encodeURIComponent(url)}`;
   const qrCode = useRef(
     new QRCodeStyling({
       width: 300,
@@ -92,6 +95,8 @@ const QrGenerator = () => {
 
   const handleGenerate = () => {
     if (text.trim()) {
+      
+      console.log(redirectUrl);
       qrCode.current.update({
         data: redirectUrl,
         dotsOptions: { color: fgColor },
@@ -132,7 +137,7 @@ const QrGenerator = () => {
       qrRef.current.innerHTML = ''; // clear previous canvas
       qrCode.current.append(qrRef.current);
     }
-  }, [qrVisible, fgColor,redirectUrl,cornerType,dotType, bgColor]);
+  }, [qrVisible, fgColor,text,cornerType,dotType, bgColor]);
 
   return (
     <div className={styles.container}>
