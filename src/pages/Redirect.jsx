@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useLocation } from "react-router-dom";
+
 import styles from '../styles/Redirect.module.css';
 
 const Redirect = () => {
-  const [searchParams] = useSearchParams();
-  const targetUrl = searchParams.get('url');
   const [countdown, setCountdown] = useState(3);
+  const location = useLocation();
+
 
   useEffect(() => {
+    const targetUrl = location.pathname.replace("/r/", "");
+
     if (!targetUrl) return;
 
     const timer = setInterval(() => {
@@ -21,7 +24,7 @@ const Redirect = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetUrl]);
+  }, []);
 
   return (
     <div className={styles.redirectContainer}>

@@ -21,7 +21,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/qr" element={<QrGenerator />} />
-            <Route path="/r" element={<Redirect />} />
+            <Route path="/r/*" element={<Redirect />} />
             <Route path="/image-compressor" element={<ImageCompressor />} />
             <Route path="/video-compressor" element={<VideoCompressor />} />
 

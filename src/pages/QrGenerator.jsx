@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import QRCodeStyling from 'qr-code-styling';
 import styles from '../styles/QrGenerator.module.css';
 
-
 const dotStyles = [
   'square',
   'dots',
@@ -29,6 +28,7 @@ const foregroundColors = [
   '#3b82f6', // Blue-500
   '#8b5cf6', // Violet-500
   '#f59e0b', // Amber-500
+  'transparent',
 ];
 
 const backgroundColors = [
@@ -40,6 +40,7 @@ const backgroundColors = [
   '#fce7f3', // Pink-100
   '#dcfce7', // Green-100
   '#f3f4f6', // Gray-100
+  'transparent',
 ];
 
 const colorNameMap = {
@@ -57,22 +58,20 @@ const colorNameMap = {
   '#dbeafe': 'Sky',
   '#fce7f3': 'Blush',
   '#dcfce7': 'Mint',
-  '#f3f4f6': 'Cloud'
+  '#f3f4f6': 'Cloud',
+  'transparent':'transparent',
 };
 
 const QrGenerator = () => {
   const qrRef = useRef(null);
   const [text, setText] = useState('');
-  const [qrVisible, setQrVisible] = useState(false);
   const [fgColor, setFgColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#ffffff');
   const [dotType, setDotType] = useState('dots');
   const [cornerType, setCornerType] = useState('square');
-  let url=text;
-  if(!text.startsWith("https://")&&!text.startsWith("http://")){
-    url="https://"+text;
-  }
-  const redirectUrl = `${import.meta.env.VITE_BASE_URL}/r?url=${encodeURIComponent(url)}`;
+  const [redirectUrl,setRedirectUrl]=useState('');
+  const [bgImage, setBgImage] = useState(null);
+
   const qrCode = useRef(
     new QRCodeStyling({
       width: 300,
@@ -82,6 +81,10 @@ const QrGenerator = () => {
       dotsOptions: {
         color: fgColor,
         type: 'dots', // this makes the dots rounded
+      },
+      qrOptions: {
+        version: 10, // 1-40. Try 10, 15, 20 and see!
+        errorCorrectionLevel: 'L',
       },
       backgroundOptions: {
         color: bgColor,
@@ -93,17 +96,10 @@ const QrGenerator = () => {
     })
   );
 
-  const handleGenerate = () => {
-    if (text.trim()) {
-      
-      console.log(redirectUrl);
-      qrCode.current.update({
-        data: redirectUrl,
-        dotsOptions: { color: fgColor },
-        backgroundOptions: { color: bgColor },
-      });
-      setQrVisible(true);
-    }
+  const handleGenerate = (e) => {
+    e.preventDefault();
+    setRedirectUrl(`${import.meta.env.VITE_BASE_URL}/r/${text}`);
+    // setRedirectUrl(text);
   };
 
   const handleDownload = () => {
@@ -114,7 +110,7 @@ const QrGenerator = () => {
   };
 
   useEffect(() => {
-        if (qrVisible) {
+        if (redirectUrl) {
         qrCode.current.update({
             data: redirectUrl,
             dotsOptions: {
@@ -133,30 +129,34 @@ const QrGenerator = () => {
             }
             });
     }
-    if (qrRef.current && qrVisible) {
+    if (qrRef.current && redirectUrl) {
       qrRef.current.innerHTML = ''; // clear previous canvas
       qrCode.current.append(qrRef.current);
     }
-  }, [qrVisible, fgColor,text,cornerType,dotType, bgColor]);
+  }, [fgColor,redirectUrl,cornerType,dotType, bgColor,bgImage]);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>QR Code Generator</h1>
       <p className={styles.subtitle}>Enter text or a URL to generate a custom QR code!</p>
 
-      <input
-        type="text"
-        placeholder="Type your text or URL here..."
-        className={styles.input}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
+      <form onSubmit={handleGenerate}>
+        <input
+          type="url"
+          placeholder="Type your text or URL here..."
+          className={styles.input}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          required 
+        />
 
-      <button onClick={handleGenerate} className={styles.generateBtn}>
-        Generate QR
-      </button>
+        <button type="submit" className={styles.generateBtn}>
+          Generate QR
+        </button>
+      </form>
 
-      {qrVisible && (
+
+      {redirectUrl && (
         <>
         <div className={styles.control}>
         {/* Dot Style */}
@@ -171,7 +171,7 @@ const QrGenerator = () => {
                 <option value={style} key={idx}>{style}</option>
             ))}
             </select>
-        </label>
+          </label>
 
         {/* Corner Style */}
         <label className={styles.dropdownLabel}>
@@ -217,12 +217,42 @@ const QrGenerator = () => {
                 </option>
             ))}
             </select>
+        
+        </label>
+        <label className={styles.dropdownLabel}>
+          Background Image:
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setBgImage(reader.result); // set the uploaded image
+                };
+                reader.readAsDataURL(file);
+              }
+            }}
+            className={styles.fileInput}
+          />
         </label>
         </div>
 
 
           <div className={styles.qrArea}>
-            <div ref={qrRef}></div>
+            <div
+              ref={qrRef}
+              style={{
+                backgroundImage: bgImage ? `url(${bgImage})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                width: '300px',
+                height: '300px',
+                borderRadius: '12px',
+              }}
+            >
+            </div>
             <button onClick={handleDownload} className={styles.downloadBtn}>
               Download QR
             </button>
