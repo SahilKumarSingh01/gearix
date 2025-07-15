@@ -9,7 +9,7 @@ const Redirect = () => {
 
 
   useEffect(() => {
-    const targetUrl = location.pathname.replace("/r/", "");
+    const targetUrl = decodeURIComponent(location.pathname.replace("/r/", ""));
 
     if (!targetUrl) return;
 

@@ -98,7 +98,7 @@ const QrGenerator = () => {
 
   const handleGenerate = (e) => {
     e.preventDefault();
-    setRedirectUrl(`${import.meta.env.VITE_BASE_URL}/r/${text}`);
+    setRedirectUrl(`${import.meta.env.VITE_BASE_URL}/r/${encodeURIComponent(text)}`);
     // setRedirectUrl(text);
   };
 
